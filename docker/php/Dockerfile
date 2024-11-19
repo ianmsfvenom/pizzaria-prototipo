@@ -1,5 +1,5 @@
-# Usar a imagem oficial do PHP com extensões necessárias
-FROM php:8.2-fpm
+FROM php:8.3-fpm-alpine3.19
+
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -26,4 +26,3 @@ WORKDIR /var/www
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 9000
-CMD ["php-fpm"]
