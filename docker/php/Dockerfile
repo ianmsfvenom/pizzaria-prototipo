@@ -1,33 +1,24 @@
-FROM php:8.3-fpm
+FROM php:8.3-fpm-alpine3.19
 
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libsqlite3-dev \
-    unzip \
-    git \
+# Install system dependencies
+RUN apk add --no-cache \
+    bash \
     curl \
+    libpng-dev \
     libzip-dev \
-    libxml2-dev \
-    libonig-dev \
-    libbz2-dev \
-    nodejs \
-    npm \
-    && docker-php-ext-install \
-    pdo \
-    pdo_sqlite \
-    pdo_mysql \
-    intl \
-    mbstring \
-    zip \
-    bcmath \
-    opcache \
-    exif \
-    xml
+    zlib-dev
+
+# Install PHP extensions
+RUN docker-php-ext-install gd \
+    && docker-php-ext-install zip
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar o código da aplicação para o contêiner
+# Install node and npm
+RUN apk add --no-cache nodejs npm
+
+# Set working directory
 WORKDIR /var/www
 
 EXPOSE 9000
