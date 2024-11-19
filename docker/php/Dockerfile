@@ -30,18 +30,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Copiar o código da aplicação para o contêiner
 WORKDIR /var/www
-COPY . .
-
-# Configurar permissões
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Instalar dependências do Laravel
 RUN composer install --no-dev --optimize-autoloader
-
-# Configurar o Laravel
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
 
 EXPOSE 9000
 CMD ["php-fpm"]
