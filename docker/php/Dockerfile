@@ -1,17 +1,28 @@
-FROM php:8.3-fpm-alpine3.19
+# Usar a imagem oficial do PHP com extensões necessárias
+FROM php:8.2-fpm
 
-# Install system dependencies
-RUN apk add --no-cache \
-    bash \
+# Instalar dependências do sistema
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libsqlite3-dev \
+    unzip \
+    git \
     curl \
-    libpng-dev \
     libzip-dev \
-    zlib-dev
-
-# Install PHP extensions
-RUN docker-php-ext-install gd \
-    && docker-php-ext-install zip 
-RUN docker-php-ext-configure intl && docker-php-ext-install intl
+    libxml2-dev \
+    libonig-dev \
+    libbz2-dev \
+    && docker-php-ext-install \
+    pdo \
+    pdo_sqlite \
+    pdo_mysql \
+    intl \
+    mbstring \
+    zip \
+    bcmath \
+    opcache \
+    exif \
+    xml
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
