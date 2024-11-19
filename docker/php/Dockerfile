@@ -3,7 +3,7 @@ FROM php:8.2-fpm
 
 # Instalar dependências
 # Instalar dependências do sistema
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     libicu-dev \
     libsqlite3-dev \
     unzip \
@@ -23,10 +23,17 @@ RUN apt-get update && apt-get install -y \
     bcmath \
     opcache \
     exif \
-    xml
+    xml \
+    bash
+
+# Instalar extensões do PHP
+RUN docker-php-ext-install gd \
+    && docker-php-ext-install zip
 
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN apk add --no-cache nodejs npm
 
 # Copiar o código da aplicação para o contêiner
 WORKDIR /var/www
