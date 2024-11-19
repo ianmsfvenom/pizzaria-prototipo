@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libonig-dev \
     libbz2-dev \
+    nodejs \
+    npm \
     && docker-php-ext-install \
     pdo \
     pdo_sqlite \
@@ -24,9 +26,6 @@ RUN apt-get update && apt-get install -y \
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Install node and npm
-RUN apk add --no-cache nodejs npm
 
 # Copiar o código da aplicação para o contêiner
 WORKDIR /var/www
