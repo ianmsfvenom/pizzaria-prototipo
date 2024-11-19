@@ -9,7 +9,7 @@ RUN apk add --no-cache \
     libzip-dev \
     zlib-dev 
 
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y \
     libicu-dev \
     libsqlite3-dev \
     unzip \
