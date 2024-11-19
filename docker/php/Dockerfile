@@ -7,9 +7,15 @@ RUN apk add --no-cache \
     curl \
     libpng-dev \
     libzip-dev \
-    zlib-dev \ 
+    zlib-dev 
+
+RUN apt-get update && apt-get install -y \
     libicu-dev \
     libsqlite3-dev \
+    unzip \
+    git \
+    curl \
+    libzip-dev \
     libxml2-dev \
     libonig-dev \
     libbz2-dev 
