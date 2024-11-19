@@ -1,23 +1,31 @@
-FROM php:8.2-fpm-alpine
+# Usar a imagem oficial do PHP com extensões necessárias
+FROM php:8.2-fpm
 
-# Instala dependências do PHP
-RUN apk add --no-cache \
-    libzip-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libxpm-dev \
-    freetype-dev \
-    libmcrypt-dev \
-    && docker-php-ext-install zip pdo_sqlite gd && docker-php-ext-configure mysqli && docker-php-ext-install mysqli
+# Instalar dependências
+RUN apt-get update && apt-get install -y \
+    libsqlite3-dev \
+    unzip \
+    git \
+    curl \
+    && docker-php-ext-install pdo pdo_sqlite
 
-# Copia os arquivos da aplicação para o container
-COPY . /var/www/html
+# Instalar Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Define o diretório de trabalho
-WORKDIR /var/www/html
+# Copiar o código da aplicação para o contêiner
+WORKDIR /var/www
+COPY . .
 
-# Instala dependências do Composer
-RUN composer install --no-dev
+# Configurar permissões
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Executa o servidor web
+# Instalar dependências do Laravel
+RUN composer install --no-dev --optimize-autoloader
+
+# Configurar o Laravel
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+EXPOSE 9000
 CMD ["php-fpm"]
