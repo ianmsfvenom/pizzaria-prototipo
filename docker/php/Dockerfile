@@ -1,27 +1,26 @@
 FROM php:8.3-fpm
 
-
-
-RUN apt update && apt install -y \
-    bash \
-    curl \
-    libpng-dev \
-    libzip-dev \
-    zlib-dev \  
+RUN apt-get update && apt-get install -y \
     libicu-dev \
     libsqlite3-dev \
     unzip \
     git \
+    curl \
+    libzip-dev \
     libxml2-dev \
     libonig-dev \
-    libbz2-dev 
-
-# Install PHP extensions
-RUN docker-php-ext-install gd \
-    && docker-php-ext-install zip \
-    && docker-php-ext-install pdo_sqlite \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install pdo
+    libbz2-dev \
+    && docker-php-ext-install \
+    pdo \
+    pdo_sqlite \
+    pdo_mysql \
+    intl \
+    mbstring \
+    zip \
+    bcmath \
+    opcache \
+    exif \
+    xml
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
