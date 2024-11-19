@@ -1,13 +1,23 @@
-FROM php:8.2-fpm
+FROM php:8.2-fpm-alpine
 
-# Instalar extensões PHP necessárias para Laravel
-RUN apt-get update && apt-get install -y \
-    libsqlite3-dev \
-    zip \
-    unzip \
-    && docker-php-ext-install pdo pdo_sqlite
+# Instala dependências do PHP
+RUN apk add --no-cache \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libxpm-dev \
+    freetype-dev \
+    libmcrypt-dev \
+    && docker-php-ext-install zip pdo_sqlite gd && docker-php-ext-configure mysqli && docker-php-ext-install mysqli
 
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Copia os arquivos da aplicação para o container
+COPY . /var/www/html
 
+# Define o diretório de trabalho
 WORKDIR /var/www/html
+
+# Instala dependências do Composer
+RUN composer install --no-dev
+
+# Executa o servidor web
+CMD ["php-fpm"]
