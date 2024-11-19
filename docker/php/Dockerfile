@@ -1,21 +1,17 @@
-FROM php:8.3-fpm-alpine3.19
+FROM php:8.3-fpm
 
 
-# Install system dependencies
-RUN apk add --no-cache \
+
+RUN apt update && apt install -y \
     bash \
     curl \
     libpng-dev \
     libzip-dev \
-    zlib-dev 
-
-RUN apt update && apt install -y \
+    zlib-dev \  
     libicu-dev \
     libsqlite3-dev \
     unzip \
     git \
-    curl \
-    libzip-dev \
     libxml2-dev \
     libonig-dev \
     libbz2-dev 
