@@ -1,28 +1,27 @@
-version: '3.8'
-
 services:
-  app:
+  application:
     build:
       context: .
-      dockerfile: ./docker/php/Dockerfile
-    volumes:
-      - .:/var/www/html
-    working_dir: /var/www/html
+      dockerfile: dockerfiles/php/Dockerfile
+    image: application
+    container_name: application
+    tty: true
     ports:
       - "9000:9000"
+    volumes:
+      - .:/var/www
     networks:
-      - filament_app
-
+      - laravel_app
   nginx:
     image: nginx:alpine
     container_name: nginx
-    volumes:
-      - .:/var/www
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
+    volumes:
+      - .:/var/www
+      - ./dockerfiles/nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - filament_app
+      - laravel_app
 networks:
-  filament_app:
+  laravel_app:
     driver: bridge
