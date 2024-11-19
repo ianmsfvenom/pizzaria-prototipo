@@ -7,7 +7,12 @@ RUN apk add --no-cache \
     curl \
     libpng-dev \
     libzip-dev \
-    zlib-dev
+    zlib-dev \ 
+    libicu-dev \
+    libsqlite3-dev \
+    libxml2-dev \
+    libonig-dev \
+    libbz2-dev 
 
 # Install PHP extensions
 RUN docker-php-ext-install gd \
