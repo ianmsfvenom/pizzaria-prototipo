@@ -22,7 +22,4 @@ RUN apk add --no-cache nodejs npm
 # Copiar o código da aplicação para o contêiner
 WORKDIR /var/www
 
-# Instalar dependências do Laravel
-RUN composer install --no-dev --optimize-autoloader
-
 EXPOSE 9000
