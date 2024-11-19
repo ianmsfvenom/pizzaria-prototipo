@@ -10,8 +10,8 @@ RUN apk add --no-cache \
 
 # Install PHP extensions
 RUN docker-php-ext-install gd \
-    && docker-php-ext-install zip \
-    && docker-php-ext-install intl
+    && docker-php-ext-install zip 
+RUN docker-php-ext-configure intl && docker-php-ext-install intl
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
