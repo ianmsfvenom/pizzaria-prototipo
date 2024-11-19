@@ -22,15 +22,25 @@ RUN apt-get update && apt-get install -y \
     bcmath \
     opcache \
     exif \
+    nodejs \
+    npm \
     xml
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalar Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install node and npm
-RUN apk add --no-cache nodejs npm
+# Copiar o código da aplicação
+WORKDIR /var/www
+COPY . .
+
+# Configurar permissões
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+# Instalar dependências do Laravel
+RUN composer install --no-dev --optimize-autoloader
 
 # Set working directory
 WORKDIR /var/www
 
 EXPOSE 9000
+CMD ["php-fpm"]
