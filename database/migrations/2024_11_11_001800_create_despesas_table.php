@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('descricao');
             $table->decimal('valor');
             $table->date('data_pagamento');
-
+            $table->string('tipo');
+            $table->string('status');
         });
     }
 
