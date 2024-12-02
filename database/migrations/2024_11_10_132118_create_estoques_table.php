@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('material');
+            $table->string('unidade_medida');
             $table->integer('quantidade');
         });
     }
